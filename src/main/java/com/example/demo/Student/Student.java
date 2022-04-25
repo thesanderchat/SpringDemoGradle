@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table
@@ -24,23 +25,25 @@ public class Student {
       generator = "student_sequence"
   )
   private Long id;
+  @NotEmpty(message = "Name may not be empty")
   private String name;
+  @NotEmpty(message = "Email may not be empty")
   private String email;
-  private LocalDate dob;
+  private LocalDate dateOfBirth;
   @Transient
   private Integer age;
 
-  public Student(Long id, String name, String email, LocalDate dob) {
+  public Student(Long id, String name, String email, LocalDate dateOfBirth) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.dob = dob;
+    this.dateOfBirth = dateOfBirth;
   }
 
-  public Student(String name, String email, LocalDate dob) {
+  public Student(String name, String email, LocalDate dateOfBirth) {
     this.name = name;
     this.email = email;
-    this.dob = dob;
+    this.dateOfBirth = dateOfBirth;
   }
 
   public Student() {
@@ -70,16 +73,16 @@ public class Student {
     this.email = email;
   }
 
-  public LocalDate getDob() {
-    return dob;
+  public LocalDate getDateOfBirth() {
+    return dateOfBirth;
   }
 
-  public void setDob(LocalDate dob) {
-    this.dob = dob;
+  public void setDateOfBirth(LocalDate dob) {
+    this.dateOfBirth = dob;
   }
 
   public Integer getAge() {
-    return Period.between(this.dob,LocalDate.now()).getYears();
+    return Period.between(this.dateOfBirth,LocalDate.now()).getYears();
   }
 
   public void setAge(Integer age) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/student")
+@RequestMapping(path = "/students")
 public class StudentController {
 
   private final StudentService studentService;
@@ -40,10 +40,8 @@ public class StudentController {
   }
 
   @PutMapping(path = "{studentId}")
-  public void updateStudent(
-      @PathVariable("studentId") Long studentId,
-      @RequestParam(required = false) String name,
-      @RequestParam(required = false) String email) {
-    studentService.updateStudent(studentId, name, email);
+  public void updateStudent(@PathVariable("studentId") Long studentId,
+                            @RequestBody StudentDto studentDto) {
+    studentService.updateStudent(studentId,studentDto);
   }
 }

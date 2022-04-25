@@ -1,7 +1,6 @@
 package com.example.demo.Student;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +37,11 @@ public class StudentService {
   }
 
   @Transactional
-  public void updateStudent(Long studentId,
-      String name,
-      String email) {
+  public void updateStudent(Long studentId,StudentDto studentDto) {
     Student student = studentRepository.findById(studentId).orElseThrow(
         () -> new IllegalStateException("student with id " + studentId + " does not exists"));
-    if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name)) {
-      student.setName(name);
+    student.setName(studentDto.getName());
+    student.setEmail(studentDto.getEmail());
+    student.setDateOfBirth(studentDto.getDateOfBirth());
     }
-    if (email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)) {
-      Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
-      if (studentOptional.isPresent()) {
-        throw new IllegalStateException("email taken");
-      }
-      student.setEmail(email);
-    }
-  }
 }
