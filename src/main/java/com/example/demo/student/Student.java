@@ -1,4 +1,6 @@
-package com.example.demo.Student;
+package com.example.demo.student;
+
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,6 +29,7 @@ public class Student {
   private Long id;
   @NotEmpty(message = "Name may not be empty")
   private String name;
+  @NaturalId
   @NotEmpty(message = "Email may not be empty")
   private String email;
   private LocalDate dateOfBirth;

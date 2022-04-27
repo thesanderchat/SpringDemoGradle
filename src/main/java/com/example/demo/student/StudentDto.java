@@ -1,12 +1,15 @@
-package com.example.demo.Student;
+package com.example.demo.student;
+
+import org.hibernate.annotations.NaturalId;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 public class StudentDto {
-    @NotEmpty
+    @NotEmpty(message = "Email may not be empty")
     private String name;
-    @NotEmpty
+    @NaturalId
+    @NotEmpty(message = "Email may not be empty")
     private String email;
     private LocalDate dateOfBirth;
 
