@@ -1,94 +1,90 @@
 package com.example.demo.student;
 
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.time.Period;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table
 public class Student {
-  @Id
-  @SequenceGenerator(
-      name="student_sequence",
-      sequenceName="student_sequence",
-      allocationSize = 1
-  )
-  @GeneratedValue(
-      strategy = GenerationType.SEQUENCE,
-      generator = "student_sequence"
-  )
-  private Long id;
-  @NotEmpty(message = "Name may not be empty")
-  private String name;
-  @NaturalId
-  @NotEmpty(message = "Email may not be empty")
-  private String email;
-  private LocalDate dateOfBirth;
-  @Transient
-  private Integer age;
+    @Id
+    @SequenceGenerator(
+            name = "student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_sequence"
+    )
+    private Long id;
+    @NotEmpty(message = "Name may not be empty")
+    private String name;
+    @NotEmpty(message = "Email may not be empty")
+    private String email;
+    private LocalDate dateOfBirth;
 
-  public Student(Long id, String name, String email, LocalDate dateOfBirth) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.dateOfBirth = dateOfBirth;
-  }
+    @Transient
+    private Integer age;
 
-  public Student(String name, String email, LocalDate dateOfBirth) {
-    this.name = name;
-    this.email = email;
-    this.dateOfBirth = dateOfBirth;
-  }
+    public Student(Long id, String name, String email, LocalDate dateOfBirth) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
 
-  public Student() {
-  }
+    public Student(String name, String email, LocalDate dateOfBirth) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public Student() {
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public LocalDate getDateOfBirth() {
-    return dateOfBirth;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setDateOfBirth(LocalDate dob) {
-    this.dateOfBirth = dob;
-  }
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-  public Integer getAge() {
-    return Period.between(this.dateOfBirth,LocalDate.now()).getYears();
-  }
+    public void setDateOfBirth(LocalDate dob) {
+        this.dateOfBirth = dob;
+    }
 
-  public void setAge(Integer age) {
-    this.age = age;
-  }
+    public Integer getAge() {
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
 }

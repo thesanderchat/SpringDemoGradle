@@ -1,46 +1,50 @@
 package com.example.demo.student;
 
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/students")
 public class StudentController {
 
-  private final StudentService studentService;
+    private final StudentService studentService;
 
-  @Autowired
-  public StudentController(StudentService studentService) {
-    this.studentService = studentService;
-  }
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
-  @GetMapping
-  private List<Student> getStudents() {
-    return studentService.getStudents();
-  }
+    @GetMapping
+    private List<StudentDto> getStudents() {
+        return studentService.getStudents();
+    }
+    @GetMapping(path = "{studentId}")
+    private StudentDto getStudents(@PathVariable("studentId") Long studentId) {
+        return studentService.getStudentById(studentId);
+    }
 
-  @PostMapping
-  public void registerNewStudent(@RequestBody Student student) {
-    studentService.addNewStudent(student);
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerNewStudent(@RequestBody @Valid StudentDto studentDto) {
+        studentService.addNewStudent(studentDto);
+    }
 
-  @DeleteMapping(path = "{studentId}")
-  public void deleteStudent(@PathVariable("studentId") Long studentId) {
-    studentService.deleteStudent(studentId);
-  }
+    @DeleteMapping(path = "{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteStudent(@PathVariable("studentId") Long studentId) {
+        studentService.deleteStudent(studentId);
+    }
 
-  @PutMapping(path = "{studentId}")
-  public void updateStudent(@PathVariable("studentId") Long studentId,
-                            @RequestBody StudentDto studentDto) {
-    studentService.updateStudent(studentId,studentDto);
-  }
+    @PutMapping(path = "{studentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updateStudent(@PathVariable("studentId") Long studentId,
+                              @RequestBody @Valid StudentDto studentDto) {
+        studentService.updateStudent(studentId, studentDto);
+    }
 }

@@ -1,31 +1,38 @@
 package com.example.demo.student;
 
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
   private final StudentRepository studentRepository;
-
-  @Autowired
-  public StudentService(StudentRepository studentRepository) {
+  private final Mapper mapper;
+  public StudentService(StudentRepository studentRepository, Mapper mapper) {
     this.studentRepository = studentRepository;
+    this.mapper = mapper;
   }
 
-  public List<Student> getStudents() {
-    return studentRepository.findAll();
+  public List<StudentDto> getStudents() {
+    return studentRepository.findAllByOrderByIdAsc().stream()
+            .map(mapper::toStudentDto)
+            .collect(Collectors.toList());
+  }
+  public StudentDto getStudentById(Long studentId){
+    return studentRepository.findById(studentId)
+            .map(mapper::toStudentDto).orElseThrow(() -> new IllegalStateException("No student"));
   }
 
-  public void addNewStudent(Student student) {
-    Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
+  public void addNewStudent(StudentDto studentDto) {
+    Optional<Student> studentOptional = studentRepository.findStudentByEmail(studentDto.getEmail());
     if (studentOptional.isPresent()) {
       throw new IllegalStateException("email taken");
     }
-    studentRepository.save(student);
+    studentRepository.save(mapper.toStudent(studentDto));
   }
 
   public void deleteStudent(Long studentId) {

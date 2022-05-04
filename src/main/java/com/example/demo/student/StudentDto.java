@@ -6,9 +6,8 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 public class StudentDto {
-    @NotEmpty(message = "Email may not be empty")
+    @NotEmpty(message = "Name may not be empty")
     private String name;
-    @NaturalId
     @NotEmpty(message = "Email may not be empty")
     private String email;
     private LocalDate dateOfBirth;
