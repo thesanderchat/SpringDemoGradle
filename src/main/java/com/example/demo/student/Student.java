@@ -1,7 +1,10 @@
 package com.example.demo.student;
 
-import org.hibernate.annotations.ManyToAny;
-import org.hibernate.annotations.NaturalId;
+import com.example.demo.group.Group;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -9,7 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table
+@Table(name = "students")
 public class Student {
     @Id
     @SequenceGenerator(
@@ -27,7 +30,10 @@ public class Student {
     @NotEmpty(message = "Email may not be empty")
     private String email;
     private LocalDate dateOfBirth;
-
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "groups_id")
+    private Group group;
     @Transient
     private Integer age;
 
@@ -42,6 +48,13 @@ public class Student {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Student(String name, String email, LocalDate dateOfBirth, Group group) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.group = group;
     }
 
     public Student() {
@@ -87,4 +100,11 @@ public class Student {
         this.age = age;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

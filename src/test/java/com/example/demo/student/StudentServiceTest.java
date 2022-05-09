@@ -12,14 +12,14 @@ import static org.mockito.Mockito.*;
 
 class StudentServiceTest {
     private StudentRepository mockStudentRepository;
-    private Mapper mockMapper;
+    private StudentMapper mockStudentMapper;
     private StudentService testee;
 
     @BeforeEach
     void setup() {
         mockStudentRepository = mock(StudentRepository.class);
-        mockMapper = mock(Mapper.class);
-        testee = new StudentService(mockStudentRepository, mockMapper);
+        mockStudentMapper = mock(StudentMapper.class);
+        testee = new StudentService(mockStudentRepository, mockStudentMapper);
     }
 
     @Test
@@ -40,7 +40,7 @@ class StudentServiceTest {
         Student student = new Student();
         when(mockStudentRepository.findStudentByEmail("email")).thenReturn(Optional.empty());
         StudentDto studentDto = new StudentDto("name", "email", LocalDate.of(2020, 2, 18));
-        when(mockMapper.toStudent(studentDto)).thenReturn(student);
+        when(mockStudentMapper.toStudent(studentDto)).thenReturn(student);
         testee.addNewStudent(studentDto);
         verify(mockStudentRepository, times(1)).save(student);
     }

@@ -1,6 +1,7 @@
 package com.example.demo.student;
 
-import org.hibernate.annotations.NaturalId;
+
+import com.example.demo.group.Group;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -11,11 +12,19 @@ public class StudentDto {
     @NotEmpty(message = "Email may not be empty")
     private String email;
     private LocalDate dateOfBirth;
+    private Group group;
 
     public StudentDto(String name, String email, LocalDate dateOfBirth) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public StudentDto(String name, String email, LocalDate dateOfBirth, Group group) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.group = group;
     }
 
     public String getName() {
@@ -40,5 +49,13 @@ public class StudentDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

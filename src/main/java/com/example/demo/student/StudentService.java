@@ -11,20 +11,20 @@ import java.util.stream.Collectors;
 public class StudentService {
 
   private final StudentRepository studentRepository;
-  private final Mapper mapper;
-  public StudentService(StudentRepository studentRepository, Mapper mapper) {
+  private final StudentMapper studentMapper;
+  public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
     this.studentRepository = studentRepository;
-    this.mapper = mapper;
+    this.studentMapper = studentMapper;
   }
 
   public List<StudentDto> getStudents() {
     return studentRepository.findAllByOrderByIdAsc().stream()
-            .map(mapper::toStudentDto)
+            .map(studentMapper::toStudentDto)
             .collect(Collectors.toList());
   }
   public StudentDto getStudentById(Long studentId){
     return studentRepository.findById(studentId)
-            .map(mapper::toStudentDto).orElseThrow(() -> new IllegalStateException("No student"));
+            .map(studentMapper::toStudentDto).orElseThrow(() -> new IllegalStateException("No student"));
   }
 
   public void addNewStudent(StudentDto studentDto) {
@@ -32,7 +32,7 @@ public class StudentService {
     if (studentOptional.isPresent()) {
       throw new IllegalStateException("email taken");
     }
-    studentRepository.save(mapper.toStudent(studentDto));
+    studentRepository.save(studentMapper.toStudent(studentDto));
   }
 
   public void deleteStudent(Long studentId) {
@@ -50,5 +50,6 @@ public class StudentService {
     student.setName(studentDto.getName());
     student.setEmail(studentDto.getEmail());
     student.setDateOfBirth(studentDto.getDateOfBirth());
+    student.setGroup(studentDto.getGroup());
     }
 }
