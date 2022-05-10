@@ -13,11 +13,22 @@ public class StudentDto {
     private String email;
     private LocalDate dateOfBirth;
     private Group group;
+    private Long groupId;
+
+    public StudentDto() {
+    }
 
     public StudentDto(String name, String email, LocalDate dateOfBirth) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public StudentDto(String name, String email, LocalDate dateOfBirth, Long groupId) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.groupId = groupId;
     }
 
     public StudentDto(String name, String email, LocalDate dateOfBirth, Group group) {
@@ -57,5 +68,13 @@ public class StudentDto {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 }

@@ -32,7 +32,7 @@ public class Student {
     private LocalDate dateOfBirth;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "groups_id")
+    @PrimaryKeyJoinColumn(name = "groups_id")
     private Group group;
     @Transient
     private Integer age;

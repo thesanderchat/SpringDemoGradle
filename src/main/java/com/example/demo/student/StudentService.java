@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.group.Group;
+import com.example.demo.group.GroupRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,10 +13,12 @@ import java.util.stream.Collectors;
 public class StudentService {
 
   private final StudentRepository studentRepository;
+  private final GroupRepository groupRepository;
   private final StudentMapper studentMapper;
-  public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
+  public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, GroupRepository groupRepository) {
     this.studentRepository = studentRepository;
     this.studentMapper = studentMapper;
+    this.groupRepository = groupRepository;
   }
 
   public List<StudentDto> getStudents() {
@@ -32,7 +36,12 @@ public class StudentService {
     if (studentOptional.isPresent()) {
       throw new IllegalStateException("email taken");
     }
-    studentRepository.save(studentMapper.toStudent(studentDto));
+    Group group = groupRepository.findById(studentDto.getGroupId()).orElseThrow(
+            () -> new IllegalStateException("group with id " + studentDto.getGroupId() + " does not exists"));
+    Student student=studentMapper.toStudent(studentDto);
+    group.addNewStudentToStudentList(student);
+    studentRepository.save(student);
+
   }
 
   public void deleteStudent(Long studentId) {
@@ -50,6 +59,8 @@ public class StudentService {
     student.setName(studentDto.getName());
     student.setEmail(studentDto.getEmail());
     student.setDateOfBirth(studentDto.getDateOfBirth());
-    student.setGroup(studentDto.getGroup());
+    Group group = groupRepository.findById(studentDto.getGroupId()).orElseThrow(
+            () -> new IllegalStateException("group with id " + studentDto.getGroupId() + " does not exists"));
+    group.addNewStudentToStudentList(student);
     }
 }
