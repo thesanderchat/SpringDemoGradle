@@ -13,6 +13,9 @@ public class GroupDto {
     private LocalDate dateOfCreation;
     private List<Student> studentList = new ArrayList<>();
 
+    public GroupDto() {
+    }
+
     public List<Student> getStudentList() {
         return studentList;
     }
@@ -43,4 +46,8 @@ public class GroupDto {
         this.studentList = studentList;
     }
 
+    public GroupDto(String name, LocalDate dateOfCreation) {
+        this.name = name;
+        this.dateOfCreation = dateOfCreation;
+    }
 }

@@ -34,7 +34,14 @@ public class Group {
         studentList.add(student);
         student.setGroup(this);
     }
-    void removeStudentFromStudentList(Student student){
+    public void addNewListOfStudentsToStudentList(List<Student> students){
+        for (Student student:students
+             ) {
+            studentList.add(student);
+            student.setGroup(this);
+        }
+    }
+    public void removeStudentFromStudentList(Student student){
         studentList.remove(student);
         student.setGroup(null);
     }

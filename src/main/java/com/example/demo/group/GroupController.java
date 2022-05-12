@@ -18,20 +18,24 @@ public class GroupController {
     public GroupController(GroupService groupService) {
         this.groupService = groupService;
     }
+
     @GetMapping
-    private List<GroupDto> getStudents() {
+    private List<GroupDto> getGroups() {
         return groupService.getGroups();
     }
+
     @GetMapping(path = "{groupId}")
-    private GroupDto getStudents(@PathVariable("groupId") Long groupId) {
+    private GroupDto getGroups(@PathVariable("groupId") Long groupId) {
         return groupService.getGroupById(groupId);
 
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void registerNewGroup(@RequestBody @Valid GroupDto groupDto) {
         groupService.addNewGroup(groupDto);
     }
+
     @DeleteMapping(path = "{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGroup(@PathVariable("groupId") Long groupId) {
@@ -41,7 +45,7 @@ public class GroupController {
     @PutMapping(path = "{groupId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void updateGroup(@PathVariable("groupId") Long grouoId,
-                              @RequestBody @Valid GroupDto groupDto) {
+                            @RequestBody @Valid GroupDto groupDto) {
         groupService.updateGroup(grouoId, groupDto);
     }
 }

@@ -21,11 +21,12 @@ public class StudentController {
     }
 
     @GetMapping
-    private List<StudentDto> getStudents() {
+    public List<StudentDto> getStudents() {
         return studentService.getStudents();
     }
+
     @GetMapping(path = "{studentId}")
-    private StudentDto getStudents(@PathVariable("studentId") Long studentId) {
+    public StudentDto getStudents(@PathVariable("studentId") Long studentId) {
         return studentService.getStudentById(studentId);
     }
 

@@ -8,6 +8,6 @@ public class StudentMapper {
         return new StudentDto(student.getName(), student.getEmail(),student.getDateOfBirth(),student.getGroup().getId());
     }
     public Student toStudent(StudentDto studentDto){
-        return new Student(studentDto.getName(), studentDto.getEmail(),studentDto.getDateOfBirth(),studentDto.getGroup());
+        return new Student(studentDto.getName(), studentDto.getEmail(),studentDto.getDateOfBirth());
     }
 }
