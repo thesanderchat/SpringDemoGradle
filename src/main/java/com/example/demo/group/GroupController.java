@@ -1,7 +1,6 @@
 package com.example.demo.group;
 
 
-import com.example.demo.student.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +43,8 @@ public class GroupController {
 
     @PutMapping(path = "{groupId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateGroup(@PathVariable("groupId") Long grouoId,
+    public void updateGroup(@PathVariable("groupId") Long groupId,
                             @RequestBody @Valid GroupDto groupDto) {
-        groupService.updateGroup(grouoId, groupDto);
+        groupService.updateGroup(groupId, groupDto);
     }
 }

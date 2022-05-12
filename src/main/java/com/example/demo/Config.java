@@ -1,22 +1,21 @@
 package com.example.demo;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
-
 import com.example.demo.group.Group;
-import com.example.demo.group.GroupRepository;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+
 @Configuration
 public class Config {
 
   @Bean
-  CommandLineRunner commandLineRunner(StudentRepository studentRepository, GroupRepository groupRepository){
+  CommandLineRunner commandLineRunner(StudentRepository studentRepository){
     return args -> {
       Group group1 = new Group("math", LocalDate.of(2000, Month.JULY, 18));
       Group group2 = new Group("it", LocalDate.of(2000, Month.JULY, 18));

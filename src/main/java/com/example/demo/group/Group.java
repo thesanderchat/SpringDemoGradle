@@ -2,15 +2,22 @@ package com.example.demo.group;
 
 import com.example.demo.student.Student;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "groups")
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Group {
     @Id
     @SequenceGenerator(
@@ -24,81 +31,66 @@ public class Group {
     )
     private Long id;
     @NotEmpty(message = "Name may not be empty")
+    @NonNull
     private String name;
+    @NonNull
     private LocalDate dateOfCreation;
+    @NonNull
     @JsonManagedReference
-    @OneToMany(mappedBy = "group",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Student> studentList= new ArrayList<>();
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Student> studentList = new ArrayList<>();
 
-    public void addNewStudentToStudentList(Student student){
-        studentList.add(student);
-        student.setGroup(this);
-    }
-    public void addNewListOfStudentsToStudentList(List<Student> students){
-        for (Student student:students
-             ) {
-            studentList.add(student);
-            student.setGroup(this);
-        }
-    }
-    public void removeStudentFromStudentList(Student student){
-        studentList.remove(student);
-        student.setGroup(null);
-    }
     public Group() {
 
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation, @NonNull List<Student> studentList) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-    public void setDateOfCreation(LocalDate dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
-    }
-
-    public Group(String name, LocalDate dateOfCreation, List<Student> studentList) {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
         this.studentList = studentList;
     }
 
-    public Group(Long id, String name, LocalDate dateOfCreation) {
+    public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation) {
         this.id = id;
         this.name = name;
         this.dateOfCreation = dateOfCreation;
     }
 
-    public Group(String name, LocalDate dateOfCreation) {
+    public Group(@NonNull String name, @NonNull LocalDate dateOfCreation, @NonNull List<Student> studentList) {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
+        this.studentList = studentList;
     }
 
-    public Group(String name) {
-        this.name = name;
+    public void addNewStudentToStudentList(Student student) {
+        studentList.add(student);
+        student.setGroup(this);
+    }
+
+    public void addNewListOfStudentsToStudentList(List<Student> students) {
+        for (Student student : students
+        ) {
+            studentList.add(student);
+            student.setGroup(this);
+        }
+    }
+
+    public void removeStudentFromStudentList(Student student) {
+        studentList.remove(student);
+        student.setGroup(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Group group = (Group) o;
+        return id != null && Objects.equals(id, group.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -1,52 +1,30 @@
 package com.example.demo.group;
 
 import com.example.demo.student.Student;
+import lombok.Data;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class GroupDto {
+    @NonNull
     @NotEmpty(message = "Name may not be empty")
     private String name;
+    @NonNull
     private LocalDate dateOfCreation;
     private List<Student> studentList = new ArrayList<>();
 
-    public GroupDto() {
-    }
-
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-    public void setDateOfCreation(LocalDate dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public GroupDto(String name, LocalDate dateOfCreation, List<Student> studentList) {
+    public GroupDto(@NonNull String name, @NonNull LocalDate dateOfCreation, List<Student> studentList) {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
         this.studentList = studentList;
     }
 
-    public GroupDto(String name, LocalDate dateOfCreation) {
+    public GroupDto(@NonNull String name, @NonNull LocalDate dateOfCreation) {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
     }

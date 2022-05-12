@@ -1,63 +1,30 @@
 package com.example.demo.student;
 
 
+import lombok.Data;
+import lombok.NonNull;
+
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
+@Data
 public class StudentDto {
+    @NonNull
     @NotEmpty(message = "Name may not be empty")
     private String name;
+    @NonNull
     @NotEmpty(message = "Email may not be empty")
     private String email;
+    @NonNull
     private LocalDate dateOfBirth;
     private Long groupId;
 
-    public StudentDto() {
-    }
 
-    public StudentDto(String name, String email, LocalDate dateOfBirth) {
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public StudentDto(String name, String email, LocalDate dateOfBirth, Long groupId) {
+    public StudentDto(@NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth, Long groupId) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.groupId = groupId;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
 }
