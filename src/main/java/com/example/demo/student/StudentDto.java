@@ -27,4 +27,12 @@ public class StudentDto {
         this.groupId = groupId;
     }
 
+    public StudentDto(@NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public StudentDto() {
+    }
 }

@@ -28,4 +28,7 @@ public class GroupDto {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
     }
+
+    public GroupDto() {
+    }
 }
