@@ -44,6 +44,7 @@ class StudentServiceTest {
 
         verify(mockStudentRepository, times(1)).save(student);
     }
+
     @Test
     void addNewStudent_WhenStudentExistInDbGroupDontExist() {
         Group group = new Group(1L, "group1", LocalDate.of(2020, 2, 18));
@@ -57,6 +58,7 @@ class StudentServiceTest {
 
         assertEquals("group with id " + studentDto.getGroupId() + " does not exists", illegalStateException.getMessage());
     }
+
     @Test
     void deleteStudent_WhenStudentDontExistsInDb_ThenThrowIllegalStateException() {
         Long studentId = 3L;

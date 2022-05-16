@@ -3,21 +3,21 @@ package com.example.demo.group;
 import com.example.demo.student.Student;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "groups")
 @Getter
 @Setter
-@ToString
+@AllArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Group {
     @Id
     @SequenceGenerator(
@@ -29,27 +29,19 @@ public class Group {
             strategy = GenerationType.SEQUENCE,
             generator = "group_sequence"
     )
+    @Column(nullable = false)
     private Long id;
     @NotEmpty(message = "Name may not be empty")
     @NonNull
+    @Column(nullable = false)
     private String name;
+    @NotNull(message = "Date of creation may not be null")
     @NonNull
+    @Column(nullable = false)
     private LocalDate dateOfCreation;
-    @NonNull
     @JsonManagedReference
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Student> studentList = new ArrayList<>();
-
-    public Group() {
-
-    }
-
-    public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation, @NonNull List<Student> studentList) {
-        this.id = id;
-        this.name = name;
-        this.dateOfCreation = dateOfCreation;
-        this.studentList = studentList;
-    }
 
     public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation) {
         this.id = id;
@@ -79,18 +71,5 @@ public class Group {
     public void removeStudentFromStudentList(Student student) {
         studentList.remove(student);
         student.setGroup(null);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Group group = (Group) o;
-        return id != null && Objects.equals(id, group.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

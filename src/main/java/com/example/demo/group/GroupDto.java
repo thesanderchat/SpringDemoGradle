@@ -1,22 +1,30 @@
 package com.example.demo.group;
 
 import com.example.demo.student.Student;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupDto {
-    @NonNull
+    @Column(nullable = false)
+    private Long id;
+    @Column(nullable = false)
     @NotEmpty(message = "Name may not be empty")
     private String name;
-    @NonNull
+    @NotNull(message = "Date of creation may not be null")
+    @Column(nullable = false)
     private LocalDate dateOfCreation;
-    private List<Student> studentList = new ArrayList<>();
+    private List<Student> studentList;
 
     public GroupDto(@NonNull String name, @NonNull LocalDate dateOfCreation, List<Student> studentList) {
         this.name = name;
@@ -29,6 +37,4 @@ public class GroupDto {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public GroupDto() {
-    }
 }

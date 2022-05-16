@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class GroupMapper {
     public GroupDto toGroupDto(Group group) {
-        return new GroupDto(group.getName(), group.getDateOfCreation(), group.getStudentList());
+        return new GroupDto(group.getId(), group.getName(), group.getDateOfCreation(), group.getStudentList());
     }
 
     public Group toGroup(GroupDto groupDto) {
-        return new Group(groupDto.getName(), groupDto.getDateOfCreation(), groupDto.getStudentList());
+        return new Group(groupDto.getId(), groupDto.getName(), groupDto.getDateOfCreation(), groupDto.getStudentList());
     }
 }
