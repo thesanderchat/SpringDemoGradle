@@ -1,7 +1,6 @@
 package com.example.demo.group;
 
-import com.example.demo.student.Student;
-import lombok.AllArgsConstructor;
+import com.example.demo.student.StudentDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class GroupDto {
     @Column(nullable = false)
     private Long id;
@@ -24,9 +22,9 @@ public class GroupDto {
     @NotNull(message = "Date of creation may not be null")
     @Column(nullable = false)
     private LocalDate dateOfCreation;
-    private List<Student> studentList;
+    private List<StudentDto> studentList;
 
-    public GroupDto(@NonNull String name, @NonNull LocalDate dateOfCreation, List<Student> studentList) {
+    public GroupDto(@NonNull String name, @NonNull LocalDate dateOfCreation, List<StudentDto> studentList) {
         this.name = name;
         this.dateOfCreation = dateOfCreation;
         this.studentList = studentList;
@@ -37,4 +35,9 @@ public class GroupDto {
         this.dateOfCreation = dateOfCreation;
     }
 
+    public GroupDto(Long id, String name, LocalDate dateOfCreation) {
+        this.id = id;
+        this.name = name;
+        this.dateOfCreation = dateOfCreation;
+    }
 }

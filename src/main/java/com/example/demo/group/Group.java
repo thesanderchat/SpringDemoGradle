@@ -1,7 +1,6 @@
 package com.example.demo.group;
 
 import com.example.demo.student.Student;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,7 +28,6 @@ public class Group {
             strategy = GenerationType.SEQUENCE,
             generator = "group_sequence"
     )
-    @Column(nullable = false)
     private Long id;
     @NotEmpty(message = "Name may not be empty")
     @NonNull
@@ -39,7 +37,6 @@ public class Group {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfCreation;
-    @JsonManagedReference
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Student> studentList = new ArrayList<>();
 

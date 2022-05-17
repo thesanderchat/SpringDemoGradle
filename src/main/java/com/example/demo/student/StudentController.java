@@ -1,7 +1,7 @@
 package com.example.demo.student;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/students")
+@AllArgsConstructor
 public class StudentController {
 
     private final StudentService studentService;
-
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     public List<StudentDto> getStudents() {

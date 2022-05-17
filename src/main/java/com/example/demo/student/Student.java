@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.Period;
 
 @Entity
 @Table(name = "students")
@@ -28,7 +27,6 @@ public class Student {
             strategy = GenerationType.SEQUENCE,
             generator = "student_sequence"
     )
-    @Column(nullable = false)
     private Long id;
     @NonNull
     @Column(nullable = false)
@@ -42,12 +40,9 @@ public class Student {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfBirth;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "groups_id")
     private Group group;
-    @Transient
-    private Integer age;
 
     public Student(Long id, @NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth) {
         this.id = id;
@@ -63,7 +58,4 @@ public class Student {
         this.group = group;
     }
 
-    public Integer getAge() {
-        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
-    }
 }

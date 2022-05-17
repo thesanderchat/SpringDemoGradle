@@ -1,5 +1,6 @@
 package com.example.demo.group;
 
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,6 +48,6 @@ public class GroupService {
                 () -> new IllegalStateException("group with id " + groupId + " does not exists"));
         group.setName(groupDto.getName());
         group.setDateOfCreation(groupDto.getDateOfCreation());
-        group.addNewListOfStudentsToStudentList(groupDto.getStudentList());
+        group.addNewListOfStudentsToStudentList(groupDto.getStudentList().stream().map(groupMapper.studentMapper::toStudent).collect(Collectors.toList()));
     }
 }

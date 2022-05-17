@@ -1,7 +1,7 @@
 package com.example.demo.group;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +10,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/groups")
+@AllArgsConstructor
 public class GroupController {
     private final GroupService groupService;
 
-    @Autowired
-    public GroupController(GroupService groupService) {
-        this.groupService = groupService;
-    }
-
     @GetMapping
-    private List<GroupDto> getGroups() {
+    public List<GroupDto> getGroups() {
         return groupService.getGroups();
     }
 
     @GetMapping(path = "{groupId}")
-    private GroupDto getGroups(@PathVariable("groupId") Long groupId) {
+    public GroupDto getGroups(@PathVariable("groupId") Long groupId) {
         return groupService.getGroupById(groupId);
 
     }

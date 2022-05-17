@@ -1,12 +1,13 @@
 package com.example.demo.group;
 
-import com.example.demo.student.Student;
+import com.example.demo.student.StudentDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,7 +36,7 @@ class GroupServiceTest {
     @Test
     void addNewGroup() {
         Group group = new Group();
-        GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18), List.of(new Student("name1", "email1", LocalDate.of(2020, 2, 18))));
+        GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18), List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18))));
 
         when(mockGroupMapper.toGroup(groupDto)).thenReturn(group);
 
@@ -69,14 +70,14 @@ class GroupServiceTest {
     void updateGroup_WhenGroupExistsInDb_ThenUpdateGroupSuccessfully() {
         Long groupId = 1L;
         Group group = new Group();
-        GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18), List.of(new Student("name1", "email1", LocalDate.of(2020, 2, 18))));
+        GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18), List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18))));
         when(mockGroupRepository.findById(groupId)).thenReturn(Optional.of(group));
 
         testee.updateGroup(groupId, groupDto);
 
         assertEquals("name1", group.getName());
         assertEquals(LocalDate.of(2020, 2, 18), group.getDateOfCreation());
-        assertEquals(groupDto.getStudentList(), group.getStudentList());
+        assertEquals(groupDto.getStudentList().stream().map(mockGroupMapper.studentMapper::toStudent).collect(Collectors.toList()), group.getStudentList());
     }
 
     @Test
