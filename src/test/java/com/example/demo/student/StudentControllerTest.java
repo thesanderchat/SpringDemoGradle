@@ -44,6 +44,17 @@ class StudentControllerTest {
     }
 
     @Test
+    void getStudentById() throws Exception {
+        Long studentId = 1L;
+        StudentDto result = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
+        when(mockStudentService.getStudentById(studentId)).thenReturn(result);
+        this.mockMvc.perform(get("/students/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJsonString(result)));
+    }
+
+    @Test
     void registerNewStudent() throws Exception {
         StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
         this.mockMvc.perform(MockMvcRequestBuilders

@@ -20,7 +20,7 @@ public class GroupController {
     }
 
     @GetMapping(path = "{groupId}")
-    public GroupDto getGroups(@PathVariable("groupId") Long groupId) {
+    public GroupDto getGroupById(@PathVariable("groupId") Long groupId) {
         return groupService.getGroupById(groupId);
 
     }
@@ -42,5 +42,18 @@ public class GroupController {
     public void updateGroup(@PathVariable("groupId") Long groupId,
                             @RequestBody @Valid GroupDto groupDto) {
         groupService.updateGroup(groupId, groupDto);
+    }
+
+    @PutMapping(path = "{groupId}/{studentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addStudentToGroup(@PathVariable("groupId") Long groupId,
+                                  @PathVariable("studentId") Long studentId) {
+        groupService.addStudentToGroup(groupId, studentId);
+    }
+    @DeleteMapping(path = "{groupId}/{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeStudentFromGroup(@PathVariable("groupId") Long groupId,
+                                  @PathVariable("studentId") Long studentId) {
+        groupService.removeStudentFromGroup(groupId, studentId);
     }
 }

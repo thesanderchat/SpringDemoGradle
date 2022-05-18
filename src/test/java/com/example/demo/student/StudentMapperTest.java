@@ -21,6 +21,16 @@ class StudentMapperTest {
     }
 
     @Test
+    void toStudentDto_WhenNoGroup() {
+        Student student = new Student("name1", "email1", LocalDate.of(2020, 2, 18));
+        StudentDto studentDto = testee.toStudentDto(student);
+        assertEquals("name1", studentDto.getName());
+        assertEquals("email1", studentDto.getEmail());
+        assertEquals(LocalDate.of(2020, 2, 18), studentDto.getDateOfBirth());
+        assertEquals(student.getGroup(), studentDto.getGroupId());
+    }
+
+    @Test
     void toStudent() {
         StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
         Student student = testee.toStudent(studentDto);

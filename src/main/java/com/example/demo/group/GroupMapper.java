@@ -2,19 +2,19 @@ package com.example.demo.group;
 
 import com.example.demo.student.StudentMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
 public class GroupMapper {
-    StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
 
     public GroupDto toGroupDto(Group group) {
-        return new GroupDto(group.getId(), group.getName(), group.getDateOfCreation());
+        GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDateOfCreation());
+        groupDto.setStudentList(group.getStudentList().stream().map(studentMapper::toStudentDto).collect(Collectors.toList()));
+        return groupDto;
     }
 
     public Group toGroup(GroupDto groupDto) {
