@@ -28,15 +28,46 @@ class GroupServiceTest {
     }
 
     @Test
-    void getGroups() {
+    void getGroups_WhenWeHaveGroups_ThenUpdateGroupSuccessfully() {
+        Group group = new Group(1L, "name6", LocalDate.of(2020, 2, 18));
+        List<Group> groups = List.of(group);
+        GroupDto groupDto = new GroupDto(1L, "name7", LocalDate.of(2020, 2, 18));
+        List<GroupDto> groupDtos = List.of(groupDto);
+
+        when(mockGroupRepository.findAllByOrderByIdAsc()).thenReturn(groups);
+        when(mockGroupMapper.toGroupDto(group)).thenReturn(groupDto);
+        List<GroupDto> groups1 = testee.getGroups();
+
+        assertEquals(groupDtos, groups1);
     }
 
     @Test
-    void getGroupById() {
+    void getGroupById_ThenWeHaveGroupWithRightId_ThenVerifyFinding() {
+        Group group = new Group(1L, "name1", LocalDate.of(2020, 2, 18));
+        GroupDto groupDto = new GroupDto(1L, "name1", LocalDate.of(2020, 2, 18));
+
+        when(mockGroupRepository.findById(group.getId())).thenReturn(Optional.of(group));
+        when(mockGroupMapper.toGroupDto(group)).thenReturn(groupDto);
+
+        GroupDto group1 = testee.getGroupById(group.getId());
+        assertEquals(group1, groupDto);
     }
 
     @Test
-    void addNewGroup() {
+    void getGroupById_ThenWeDontHaveGroupWithRightId_ThenThrowIllegalStateException() {
+        Group group = new Group(1L, "name1", LocalDate.of(2020, 2, 18));
+        Long groupId = group.getId();
+
+        when(mockGroupRepository.findById(groupId)).thenReturn(Optional.empty());
+
+        IllegalStateException illegalStateException = assertThrows(IllegalStateException.class,
+                () -> testee.getGroupById(groupId));
+
+        assertEquals("group with id " + groupId + " does not exists", illegalStateException.getMessage());
+    }
+
+    @Test
+    void addNewGroup_WhenAllGood_ThenVerifyAdding() {
         Group group = new Group();
         List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
         GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18), students);
@@ -49,7 +80,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void deleteGroup() {
+    void deleteGroup_WhenGroupExistsInDb_ThenVerifyDeleting() {
         Long groupId = 1L;
         Group group = new Group();
         when(mockGroupRepository.findById(groupId)).thenReturn(Optional.of(group));
@@ -95,7 +126,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void addStudentToGroup_WhenGroupAndStudentExistsInDb() {
+    void addStudentToGroup_WhenGroupAndStudentExistsInDb_ThenAddStudentSuccessfully() {
         Long groupId = 4L;
         Long studentId = 5L;
         Group group = new Group(1L, "name4", LocalDate.of(2020, 2, 18));
@@ -108,7 +139,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void addStudentToGroup_WhenGroupDoesNotExistsInDb() {
+    void addStudentToGroup_WhenGroupDoesNotExistsInDb_ThenThrowIllegalStateException() {
         Long groupId = 4L;
         Long studentId = 5L;
         Student student = new Student(1L, "name5", "email5", LocalDate.of(2020, 2, 18));
@@ -120,7 +151,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void addStudentToGroup_WhenStudentDoesNotExistsInDb() {
+    void addStudentToGroup_WhenStudentDoesNotExistsInDb_ThenThrowIllegalStateException() {
         Long groupId = 4L;
         Long studentId = 5L;
         Group group = new Group(1L, "name4", LocalDate.of(2020, 2, 18));
@@ -132,7 +163,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void removeStudent_WhenStudentDoesNotExistsInDb() {
+    void removeStudentFromGroup_WhenStudentDoesNotExistsInDb_ThenThrowIllegalStateException() {
         Long groupId = 4L;
         Long studentId = 5L;
         Group group = new Group(1L, "name4", LocalDate.of(2020, 2, 18));
@@ -144,7 +175,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void removeStudentFromGroup_WhenGroupDoesNotExistsInDb() {
+    void removeStudentFromGroup_WhenGroupDoesNotExistsInDb_ThenThrowIllegalStateException() {
         Long groupId = 4L;
         Long studentId = 5L;
         Student student = new Student(1L, "name5", "email5", LocalDate.of(2020, 2, 18));
@@ -156,7 +187,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void removeStudentFromGroup_WhenGroupAndStudentExistsInDb() {
+    void removeStudentFromGroup_WhenGroupAndStudentExistsInDb_ThenAddStudentSuccessfully() {
         Long groupId = 4L;
         Long studentId = 5L;
         Group group = new Group(1L, "name4", LocalDate.of(2020, 2, 18));
@@ -169,7 +200,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void removeStudentFromGroup_WhenStudentNotInGroupAndExistsInDb() {
+    void removeStudentFromGroup_WhenStudentNotInGroupAndExistsInDb_ThenThrowIllegalStateException() {
         Long groupId = 4L;
         Long studentId = 5L;
         Group group = new Group(1L, "name4", LocalDate.of(2020, 2, 18));

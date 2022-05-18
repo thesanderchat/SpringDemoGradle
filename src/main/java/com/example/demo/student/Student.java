@@ -1,7 +1,6 @@
 package com.example.demo.student;
 
 import com.example.demo.group.Group;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,7 +39,7 @@ public class Student {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfBirth;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "groups_id")
     private Group group;
 

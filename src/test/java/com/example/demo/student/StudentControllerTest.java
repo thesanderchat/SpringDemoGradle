@@ -34,7 +34,7 @@ class StudentControllerTest {
 
 
     @Test
-    void getStudents() throws Exception {
+    void getStudents_WhenGot_ThenCheckStatusAndContent() throws Exception {
         List<StudentDto> result = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
         when(mockStudentService.getStudents()).thenReturn(result);
         this.mockMvc.perform(get("/students"))
@@ -44,7 +44,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void getStudentById() throws Exception {
+    void getStudentById_WhenGot_ThenCheckStatusAndContent() throws Exception {
         Long studentId = 1L;
         StudentDto result = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
         when(mockStudentService.getStudentById(studentId)).thenReturn(result);
@@ -55,7 +55,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void registerNewStudent() throws Exception {
+    void registerNewStudent_WhenDone_ThenCheckIsItCreated() throws Exception {
         StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/students")
@@ -75,7 +75,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void deleteStudent() throws Exception {
+    void deleteStudent_WhenDone_ThenCheckIsItDeleted() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/students/1"))
                 .andExpect(status().isNoContent());
@@ -92,7 +92,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void updateStudent() throws Exception {
+    void updateStudent_WhenValidationOk_ThenCheckIsItCreated() throws Exception {
         StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/students/1")

@@ -35,15 +35,16 @@ class StudentServiceTest {
         verify(mockStudentRepository, times(1)).findAllByOrderByIdAsc();
     }
 
-    /*@Test
+    @Test
     void getStudentById() {
-        Long studentId = 1L;
-        Student student = new Student("name1", "email1", LocalDate.of(2020, 2, 18));
+        Student student = new Student(1L, "name1", "email1", LocalDate.of(2020, 2, 18));
+        StudentDto studentDto = new StudentDto("name", "email", LocalDate.of(2020, 2, 18));
 
-        when(mockStudentRepository.findById(studentId)).thenReturn(Optional.of(student));
+        when(mockStudentRepository.findById(student.getId())).thenReturn(Optional.of(student));
+        when(mockStudentMapper.toStudentDto(student)).thenReturn(studentDto);
 
-        testee.getStudentById(studentId);
-    }*/
+        testee.getStudentById(student.getId());
+    }
 
 
     @Test

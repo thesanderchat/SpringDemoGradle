@@ -50,10 +50,11 @@ public class GroupController {
                                   @PathVariable("studentId") Long studentId) {
         groupService.addStudentToGroup(groupId, studentId);
     }
+
     @DeleteMapping(path = "{groupId}/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeStudentFromGroup(@PathVariable("groupId") Long groupId,
-                                  @PathVariable("studentId") Long studentId) {
+                                       @PathVariable("studentId") Long studentId) {
         groupService.removeStudentFromGroup(groupId, studentId);
     }
 }

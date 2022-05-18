@@ -69,6 +69,7 @@ public class Group {
         studentList.remove(student);
         student.setGroup(null);
     }
+
     public void removeAllStudentsFromStudentList() {
         for (Student student : this.studentList
         ) {

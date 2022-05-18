@@ -26,7 +26,8 @@ public class StudentService {
 
     public StudentDto getStudentById(Long studentId) {
         return studentRepository.findById(studentId)
-                .map(studentMapper::toStudentDto).orElseThrow(() -> new IllegalStateException("No student with id " + studentId));
+                .map(studentMapper::toStudentDto)
+                .orElseThrow(() -> new IllegalStateException("No student with id " + studentId));
     }
 
     public void addNewStudent(StudentDto studentDto) {

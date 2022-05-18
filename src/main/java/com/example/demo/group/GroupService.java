@@ -31,7 +31,7 @@ public class GroupService {
 
     public GroupDto getGroupById(Long groupId) {
         return groupRepository.findById(groupId)
-                .map(groupMapper::toGroupDto).orElseThrow(() -> new IllegalStateException("No group"));
+                .map(groupMapper::toGroupDto).orElseThrow(() -> new IllegalStateException("group with id " + groupId + " does not exists"));
     }
 
     public void addNewGroup(GroupDto groupDto) {
@@ -53,6 +53,7 @@ public class GroupService {
         group.setName(groupDto.getName());
         group.setDateOfCreation(groupDto.getDateOfCreation());
     }
+
     @Transactional
     public void addStudentToGroup(Long groupId, Long studentId) {
         Group group = groupRepository.findById(groupId).orElseThrow(
@@ -61,16 +62,16 @@ public class GroupService {
                 () -> new IllegalStateException("student with id " + studentId + " does not exists"));
         group.addNewStudentToStudentList(student);
     }
+
     @Transactional
     public void removeStudentFromGroup(Long groupId, Long studentId) {
         Group group = groupRepository.findById(groupId).orElseThrow(
                 () -> new IllegalStateException("group with id " + groupId + " does not exists"));
         Student student = studentRepository.findById(studentId).orElseThrow(
                 () -> new IllegalStateException("student with id " + studentId + " does not exists"));
-        if(student.getGroup()==group) {
+        if (student.getGroup() == group) {
             group.removeStudentFromStudentList(student);
-        }
-        else{
+        } else {
             throw new IllegalStateException("student with id " + studentId + " not in group with id " + groupId);
         }
     }

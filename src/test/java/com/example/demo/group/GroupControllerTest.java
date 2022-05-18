@@ -34,7 +34,7 @@ class GroupControllerTest {
     private GroupService mockGroupService;
 
     @Test
-    void getGroups() throws Exception {
+    void getGroups_WhenGot_ThenCheckStatusAndContent() throws Exception {
         List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
         List<GroupDto> result = List.of(new GroupDto("name1", LocalDate.of(2020, 2, 18), students));
         when(mockGroupService.getGroups()).thenReturn(result);
@@ -45,7 +45,7 @@ class GroupControllerTest {
     }
 
     @Test
-    void getGroupById() throws Exception {
+    void getGroupById_WhenGot_ThenCheckStatusAndContent() throws Exception {
         List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
         GroupDto result = new GroupDto(1L, "name1", LocalDate.of(2020, 2, 18), students);
         when(mockGroupService.getGroupById(1L)).thenReturn(result);
@@ -56,7 +56,7 @@ class GroupControllerTest {
     }
 
     @Test
-    void registerNewGroup() throws Exception {
+    void registerNewGroup_WhenDone_ThenCheckIsItCreated() throws Exception {
         List<StudentDto> students = List.of(new StudentDto("name2", "email2", LocalDate.of(2020, 2, 19)));
         GroupDto groupDto = new GroupDto("name2", LocalDate.of(2020, 2, 19), students);
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -90,14 +90,14 @@ class GroupControllerTest {
     }
 
     @Test
-    void deleteGroup() throws Exception {
+    void deleteGroup_WhenDone_ThenCheckIsItDeleted() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/groups/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    void updateGroup() throws Exception {
+    void updateGroup_WhenValidationOk_ThenCheckIsItCreated() throws Exception {
         List<StudentDto> students = List.of(new StudentDto("name3", "email3", LocalDate.of(2020, 2, 20)));
         GroupDto groupDto = new GroupDto("name3", LocalDate.of(2020, 2, 20), students);
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -109,7 +109,7 @@ class GroupControllerTest {
     }
 
     @Test
-    void updateGroup_WhenValidationFailed_ThenReturnBadStatus() throws Exception {
+    void updateGroup_WhenNameValidationFailed_ThenReturnBadStatus() throws Exception {
         List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
         GroupDto groupDto = new GroupDto("", LocalDate.of(2020, 2, 18), students);
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -119,20 +119,23 @@ class GroupControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+
     @Test
-    void addNewStudentToGroup() throws Exception {
+    void addNewStudentToGroup_WhenDone_CheckIsItCreated() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/groups/1/1"))
                 .andExpect(status().isCreated());
 
     }
+
     @Test
-    void removeStudentFromGroup() throws Exception {
+    void removeStudentFromGroup_WhenDone_CheckIsItDeleted() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/groups/1/1"))
                 .andExpect(status().isNoContent());
 
     }
+
     private String toJsonString(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

@@ -1,6 +1,5 @@
 package com.example.demo.group;
 
-import com.example.demo.student.Student;
 import com.example.demo.student.StudentDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +48,7 @@ public class GroupDto {
         this.dateOfCreation = dateOfCreation;
         this.studentList = studentList;
     }
+
     public void addNewListOfStudentsToStudentList(List<StudentDto> students) {
         for (StudentDto student : students
         ) {
