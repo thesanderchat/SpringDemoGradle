@@ -5,7 +5,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentMapper {
     public StudentDto toStudentDto(Student student) {
-        return new StudentDto(student.getId(), student.getName(), student.getEmail(), student.getDateOfBirth(), student.getGroup().getId());
+        Long groupId;
+        if (student.getGroup() == null) {
+            groupId = null;
+        } else {
+            groupId = student.getGroup().getId();
+        }
+        return new StudentDto(student.getId(), student.getName(), student.getEmail(), student.getDateOfBirth(), groupId);
     }
 
     public Student toStudent(StudentDto studentDto) {

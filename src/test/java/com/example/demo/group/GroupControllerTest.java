@@ -44,6 +44,16 @@ class GroupControllerTest {
                 .andExpect(content().json(toJsonString(result)));
     }
 
+    @Test
+    void getGroupById() throws Exception {
+        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
+        GroupDto result = new GroupDto(1L, "name1", LocalDate.of(2020, 2, 18), students);
+        when(mockGroupService.getGroupById(1L)).thenReturn(result);
+        this.mockMvc.perform(get("/groups/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJsonString(result)));
+    }
 
     @Test
     void registerNewGroup() throws Exception {
@@ -109,6 +119,20 @@ class GroupControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void addNewStudentToGroup() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .put("/groups/1/1"))
+                .andExpect(status().isCreated());
+
+    }
+    @Test
+    void removeStudentFromGroup() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/groups/1/1"))
+                .andExpect(status().isNoContent());
+
+    }
     private String toJsonString(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
