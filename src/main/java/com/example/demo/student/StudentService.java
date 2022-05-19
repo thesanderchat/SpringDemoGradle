@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -8,15 +9,11 @@ import java.util.stream.Collectors;
 
 
 @Service
+@AllArgsConstructor
 public class StudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
-
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
-        this.studentRepository = studentRepository;
-        this.studentMapper = studentMapper;
-    }
 
     public List<StudentDto> getStudents() {
         return studentRepository.findAllByOrderByIdAsc().stream()

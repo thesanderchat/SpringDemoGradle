@@ -3,6 +3,7 @@ package com.example.demo.group;
 
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,16 +13,12 @@ import java.util.stream.Collectors;
 
 
 @Service
+@AllArgsConstructor
 public class GroupService {
     private final GroupMapper groupMapper;
     private final StudentRepository studentRepository;
     private final GroupRepository groupRepository;
 
-    public GroupService(GroupRepository groupRepository, GroupMapper groupMapper, StudentRepository studentRepository) {
-        this.groupRepository = groupRepository;
-        this.groupMapper = groupMapper;
-        this.studentRepository = studentRepository;
-    }
 
     public List<GroupDto> getGroups() {
         return groupRepository.findAllByOrderByIdAsc().stream()
@@ -31,7 +28,8 @@ public class GroupService {
 
     public GroupDto getGroupById(Long groupId) {
         return groupRepository.findById(groupId)
-                .map(groupMapper::toGroupDto).orElseThrow(() -> new IllegalStateException("group with id " + groupId + " does not exists"));
+                .map(groupMapper::toGroupDto)
+                .orElseThrow(() -> new IllegalStateException("group with id " + groupId + " does not exists"));
     }
 
     public void addNewGroup(GroupDto groupDto) {

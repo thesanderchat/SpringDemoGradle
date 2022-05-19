@@ -22,7 +22,6 @@ public class GroupController {
     @GetMapping(path = "{groupId}")
     public GroupDto getGroupById(@PathVariable("groupId") Long groupId) {
         return groupService.getGroupById(groupId);
-
     }
 
     @PostMapping

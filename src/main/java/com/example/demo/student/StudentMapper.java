@@ -6,11 +6,7 @@ import org.springframework.stereotype.Component;
 public class StudentMapper {
     public StudentDto toStudentDto(Student student) {
         Long groupId;
-        if (student.getGroup() == null) {
-            groupId = null;
-        } else {
-            groupId = student.getGroup().getId();
-        }
+        groupId = student.getGroup() != null ? student.getGroup().getId() : null;
         return new StudentDto(student.getId(), student.getName(), student.getEmail(), student.getDateOfBirth(), groupId);
     }
 

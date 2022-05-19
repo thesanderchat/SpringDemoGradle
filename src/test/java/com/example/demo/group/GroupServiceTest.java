@@ -24,7 +24,7 @@ class GroupServiceTest {
         mockGroupRepository = mock(GroupRepository.class);
         mockStudentRepository = mock(StudentRepository.class);
         mockGroupMapper = mock(GroupMapper.class);
-        testee = new GroupService(mockGroupRepository, mockGroupMapper, mockStudentRepository);
+        testee = new GroupService(mockGroupMapper, mockStudentRepository, mockGroupRepository);
     }
 
     @Test
