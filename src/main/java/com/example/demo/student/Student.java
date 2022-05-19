@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Table(name = "students")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
@@ -39,7 +38,7 @@ public class Student {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfBirth;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "groups_id")
     private Group group;
 
@@ -56,5 +55,9 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
         this.group = group;
     }
-
+    public Student(@NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth) {
+        this.name = name;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
 }

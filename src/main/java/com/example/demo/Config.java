@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.group.Group;
+import com.example.demo.group.GroupRepository;
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Config {
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository, GroupRepository groupRepository) {
         return args -> {
             Group group1 = new Group("math", LocalDate.of(2000, Month.JULY, 18));
             Group group2 = new Group("it", LocalDate.of(2000, Month.JULY, 18));
@@ -25,6 +26,7 @@ public class Config {
                     LocalDate.of(2002, Month.OCTOBER, 18));
             group1.addNewStudentToStudentList(oleksandr);
             group2.addNewStudentToStudentList(vladislav);
+            groupRepository.saveAll(List.of(group1,group2));
             studentRepository.saveAll(List.of(vladislav, oleksandr));
         };
     }

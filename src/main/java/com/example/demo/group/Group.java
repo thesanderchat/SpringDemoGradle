@@ -37,7 +37,7 @@ public class Group {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfCreation;
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Student> studentList = new ArrayList<>();
 
     public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation) {
@@ -46,23 +46,9 @@ public class Group {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public Group(@NonNull String name, @NonNull LocalDate dateOfCreation, @NonNull List<Student> studentList) {
-        this.name = name;
-        this.dateOfCreation = dateOfCreation;
-        this.studentList = studentList;
-    }
-
     public void addNewStudentToStudentList(Student student) {
         studentList.add(student);
         student.setGroup(this);
-    }
-
-    public void addNewListOfStudentsToStudentList(List<Student> students) {
-        for (Student student : students
-        ) {
-            studentList.add(student);
-            student.setGroup(this);
-        }
     }
 
     public void removeStudentFromStudentList(Student student) {
