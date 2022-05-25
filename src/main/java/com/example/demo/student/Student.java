@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Student {
     @Id
     @SequenceGenerator(
@@ -38,26 +39,7 @@ public class Student {
     @NonNull
     @Column(nullable = false)
     private LocalDate dateOfBirth;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumn(name = "groups_id")
     private Group group;
-
-    public Student(Long id, @NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Student(@NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth, Group group) {
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-        this.group = group;
-    }
-    public Student(@NonNull String name, @NonNull String email, @NonNull LocalDate dateOfBirth) {
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
 }

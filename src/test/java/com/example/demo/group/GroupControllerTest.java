@@ -35,8 +35,8 @@ class GroupControllerTest {
 
     @Test
     void getGroups_WhenGot_ThenCheckStatusAndContent() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
-        List<GroupDto> result = List.of(new GroupDto("name1", LocalDate.of(2020, 2, 18), students));
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        List<GroupDto> result = List.of(GroupDto.builder().name("name1").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build());
         when(mockGroupService.getGroups()).thenReturn(result);
         this.mockMvc.perform(get("/groups"))
                 .andDo(print())
@@ -46,8 +46,8 @@ class GroupControllerTest {
 
     @Test
     void getGroupById_WhenGot_ThenCheckStatusAndContent() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
-        GroupDto result = new GroupDto(1L, "name1", LocalDate.of(2020, 2, 18), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto result = GroupDto.builder().name("name1").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         when(mockGroupService.getGroupById(1L)).thenReturn(result);
         this.mockMvc.perform(get("/groups/1"))
                 .andDo(print())
@@ -57,8 +57,8 @@ class GroupControllerTest {
 
     @Test
     void registerNewGroup_WhenDone_ThenCheckIsItCreated() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name2", "email2", LocalDate.of(2020, 2, 19)));
-        GroupDto groupDto = new GroupDto("name2", LocalDate.of(2020, 2, 19), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto groupDto = GroupDto.builder().name("name1").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/groups")
                         .content(toJsonString(groupDto))
@@ -68,8 +68,8 @@ class GroupControllerTest {
 
     @Test
     void registerNewGroup_WhenNameValidationFailed_ThenReturnBadStatus() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
-        GroupDto groupDto = new GroupDto("", LocalDate.of(2020, 2, 18), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto groupDto = GroupDto.builder().name("").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/groups")
                         .content(toJsonString(groupDto))
@@ -79,8 +79,8 @@ class GroupControllerTest {
 
     @Test
     void registerNewGroup_WhenDateOfCreationValidationFailed_ThenReturnBadStatus() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
-        GroupDto groupDto = new GroupDto("name7", LocalDate.of(2020, 2, 18), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto groupDto = GroupDto.builder().name("").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         groupDto.setDateOfCreation(null);
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/groups")
@@ -98,8 +98,8 @@ class GroupControllerTest {
 
     @Test
     void updateGroup_WhenValidationOk_ThenCheckIsItCreated() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name3", "email3", LocalDate.of(2020, 2, 20)));
-        GroupDto groupDto = new GroupDto("name3", LocalDate.of(2020, 2, 20), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto groupDto = GroupDto.builder().name("name1").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/groups/1")
                         .content(toJsonString(groupDto))
@@ -110,8 +110,8 @@ class GroupControllerTest {
 
     @Test
     void updateGroup_WhenNameValidationFailed_ThenReturnBadStatus() throws Exception {
-        List<StudentDto> students = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
-        GroupDto groupDto = new GroupDto("", LocalDate.of(2020, 2, 18), students);
+        List<StudentDto> students = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
+        GroupDto groupDto = GroupDto.builder().name("").dateOfCreation(LocalDate.of(2020, 2, 18)).studentList(students).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/groups/1")
                         .content(toJsonString(groupDto))

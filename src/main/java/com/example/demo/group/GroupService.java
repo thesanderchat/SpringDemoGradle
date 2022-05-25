@@ -19,7 +19,6 @@ public class GroupService {
     private final StudentRepository studentRepository;
     private final GroupRepository groupRepository;
 
-
     public List<GroupDto> getGroups() {
         return groupRepository.findAllByOrderByIdAsc().stream()
                 .map(groupMapper::toGroupDto)

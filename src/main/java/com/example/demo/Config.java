@@ -18,12 +18,12 @@ public class Config {
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository, GroupRepository groupRepository) {
         return args -> {
-            Group group1 = new Group("math", LocalDate.of(2000, Month.JULY, 18));
-            Group group2 = new Group("it", LocalDate.of(2000, Month.JULY, 18));
-            Student vladislav = new Student("Vladislav", "pishenkovladyslav@gmail.com",
-                    LocalDate.of(2001, Month.JUNE, 16));
-            Student oleksandr = new Student("Oleksandr", "sasha.dzuyniak@gmail.com",
-                    LocalDate.of(2002, Month.OCTOBER, 18));
+            Group group1 = Group.builder().name("math").dateOfCreation(LocalDate.of(2000, Month.JULY, 18)).build();
+            Group group2 = Group.builder().name("it").dateOfCreation(LocalDate.of(2000, Month.JULY, 18)).build();
+            Student vladislav = Student.builder().name("Vladislav").email("pishenkovladyslav@gmail.com")
+                    .dateOfBirth(LocalDate.of(2001, Month.JUNE, 16)).build();
+            Student oleksandr = Student.builder().name("Oleksandr").email("sasha.dzuyniak@gmail.com")
+                    .dateOfBirth(LocalDate.of(2002, Month.OCTOBER, 18)).build();
             group1.addNewStudentToStudentList(oleksandr);
             group2.addNewStudentToStudentList(vladislav);
             groupRepository.saveAll(List.of(group1,group2));

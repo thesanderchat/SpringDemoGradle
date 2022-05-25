@@ -12,12 +12,12 @@ public class GroupMapper {
     private final StudentMapper studentMapper;
 
     public GroupDto toGroupDto(Group group) {
-        GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDateOfCreation());
+        GroupDto groupDto = GroupDto.builder().id(group.getId()).name(group.getName()).dateOfCreation(group.getDateOfCreation()).build();
         groupDto.setStudentList(group.getStudentList().stream().map(studentMapper::toStudentDto).collect(Collectors.toList()));
         return groupDto;
     }
 
     public Group toGroup(GroupDto groupDto) {
-        return new Group(groupDto.getId(), groupDto.getName(), groupDto.getDateOfCreation());
+        return Group.builder().id(groupDto.getId()).name(groupDto.getName()).dateOfCreation(groupDto.getDateOfCreation()).build();
     }
 }

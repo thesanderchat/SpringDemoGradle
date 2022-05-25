@@ -15,8 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Group {
     @Id
     @SequenceGenerator(
@@ -30,21 +30,14 @@ public class Group {
     )
     private Long id;
     @NotEmpty(message = "Name may not be empty")
-    @NonNull
     @Column(nullable = false)
     private String name;
     @NotNull(message = "Date of creation may not be null")
-    @NonNull
     @Column(nullable = false)
     private LocalDate dateOfCreation;
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    @Builder.Default
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
     private List<Student> studentList = new ArrayList<>();
-
-    public Group(Long id, @NonNull String name, @NonNull LocalDate dateOfCreation) {
-        this.id = id;
-        this.name = name;
-        this.dateOfCreation = dateOfCreation;
-    }
 
     public void addNewStudentToStudentList(Student student) {
         studentList.add(student);
@@ -57,10 +50,9 @@ public class Group {
     }
 
     public void removeAllStudentsFromStudentList() {
-        for (Student student : this.studentList
-        ) {
+        for (Student student : this.studentList) {
             student.setGroup(null);
         }
-        this.setStudentList(null);
+        studentList.clear();
     }
 }

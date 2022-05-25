@@ -26,7 +26,8 @@ class StudentServiceTest {
 
     @Test
     void getStudents() {
-        List<Student> students = List.of(new Student("name", "email", LocalDate.of(2020, 2, 18)));
+        List<Student> students = List.of(Student.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build());
 
         when(mockStudentRepository.findAllByOrderByIdAsc()).thenReturn(students);
 
@@ -37,8 +38,10 @@ class StudentServiceTest {
 
     @Test
     void getStudentById() {
-        Student student = new Student(1L, "name1", "email1", LocalDate.of(2020, 2, 18));
-        StudentDto studentDto = new StudentDto("name", "email", LocalDate.of(2020, 2, 18));
+        Student student = Student.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
+        StudentDto studentDto = StudentDto.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
 
         when(mockStudentRepository.findById(student.getId())).thenReturn(Optional.of(student));
         when(mockStudentMapper.toStudentDto(student)).thenReturn(studentDto);
@@ -60,8 +63,10 @@ class StudentServiceTest {
 
     @Test
     void addNewStudent_WhenStudentDontExistInDb() {
-        Student student = new Student("name", "email", LocalDate.of(2020, 2, 18));
-        StudentDto studentDto = new StudentDto("name", "email", LocalDate.of(2020, 2, 18));
+        Student student = Student.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
+        StudentDto studentDto = StudentDto.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
 
         when(mockStudentMapper.toStudent(studentDto)).thenReturn(student);
 
@@ -86,7 +91,8 @@ class StudentServiceTest {
     @Test
     void deleteStudent_WhenStudentExistsInDb_ThenVerifyDeleting() {
         Long studentId = 1L;
-        Student student = new Student("name1", "email1", LocalDate.of(2020, 2, 18));
+        Student student = Student.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
 
         when(mockStudentRepository.findById(studentId)).thenReturn(Optional.of(student));
 
@@ -99,8 +105,10 @@ class StudentServiceTest {
     @Test
     void deleteStudent_WhenStudentExistsInGroup_ThenThrowIllegalStateException() {
         Long studentId = 1L;
-        Group group = new Group(1L, "group1", LocalDate.of(2020, 2, 18));
-        Student student = new Student("name1", "email1", LocalDate.of(2020, 2, 18), group);
+        Group group = Group.builder().id(1L).name("groupName1")
+                .dateOfCreation(LocalDate.of(2021, 2, 18)).build();
+        Student student = Student.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).group(group).build();
 
         when(mockStudentRepository.findById(studentId)).thenReturn(Optional.of(student));
 
@@ -117,7 +125,8 @@ class StudentServiceTest {
         when(mockStudentRepository.findById(studentId)).thenReturn(Optional.empty());
 
         IllegalStateException illegalStateException = assertThrows(IllegalStateException.class,
-                () -> testee.updateStudent(studentId, new StudentDto("name", "email", LocalDate.of(2020, 2, 18))));
+                () -> testee.updateStudent(studentId, StudentDto.builder().name("name1").email("email1")
+                        .dateOfBirth(LocalDate.of(2020, 2, 18)).build()));
 
         assertEquals("student with id " + studentId + " does not exists", illegalStateException.getMessage());
     }
@@ -126,7 +135,8 @@ class StudentServiceTest {
     void updateStudent_WhenStudentExistsInDb_ThenUpdateStudentSuccessfully() {
         Student student = new Student();
         Long studentId = 1L;
-        StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
+        StudentDto studentDto = StudentDto.builder().name("name1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
 
         when(mockStudentRepository.findById(studentId)).thenReturn(Optional.of(student));
 

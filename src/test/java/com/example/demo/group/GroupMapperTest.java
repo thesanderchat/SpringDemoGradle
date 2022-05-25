@@ -23,10 +23,13 @@ class GroupMapperTest {
 
     @Test
     void toGroupDto_WhenAllGood_ThenCreateNewGroupDtoSuccessfully() {
-        Group group = new Group(1L, "groupName1", LocalDate.of(2021, 2, 18));
-        Student student = new Student(1L, "studentName1", "email1", LocalDate.of(2020, 2, 18));
+        Group group = Group.builder().id(1L).name("groupName1")
+                .dateOfCreation(LocalDate.of(2021, 2, 18)).build();
+        Student student = Student.builder().id(1L).name("studentName1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).build();
         group.addNewStudentToStudentList(student);
-        StudentDto studentDto = new StudentDto(1L, "studentName1", "email1", LocalDate.of(2020, 2, 18), group.getId());
+        StudentDto studentDto = StudentDto.builder().id(1L).name("studentName1").email("email1")
+                .dateOfBirth(LocalDate.of(2020, 2, 18)).groupId(group.getId()).build();
 
         GroupDto groupDto = testee.toGroupDto(group);
 
@@ -37,7 +40,8 @@ class GroupMapperTest {
 
     @Test
     void toGroup_WhenAllGood_ThenCreateNewGroupSuccessfully() {
-        GroupDto groupDto = new GroupDto("name1", LocalDate.of(2020, 2, 18));
+        GroupDto groupDto = GroupDto.builder().name("name1")
+                .dateOfCreation(LocalDate.of(2020, 2, 18)).build();
         Group group = testee.toGroup(groupDto);
         assertEquals("name1", group.getName());
         assertEquals(LocalDate.of(2020, 2, 18), group.getDateOfCreation());
