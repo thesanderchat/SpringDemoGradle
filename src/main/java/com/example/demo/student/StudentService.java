@@ -1,54 +1,54 @@
 package com.example.demo.student;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
+@AllArgsConstructor
 public class StudentService {
 
-  private final StudentRepository studentRepository;
-  private final Mapper mapper;
-  public StudentService(StudentRepository studentRepository, Mapper mapper) {
-    this.studentRepository = studentRepository;
-    this.mapper = mapper;
-  }
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
-  public List<StudentDto> getStudents() {
-    return studentRepository.findAllByOrderByIdAsc().stream()
-            .map(mapper::toStudentDto)
-            .collect(Collectors.toList());
-  }
-  public StudentDto getStudentById(Long studentId){
-    return studentRepository.findById(studentId)
-            .map(mapper::toStudentDto).orElseThrow(() -> new IllegalStateException("No student"));
-  }
-
-  public void addNewStudent(StudentDto studentDto) {
-    Optional<Student> studentOptional = studentRepository.findStudentByEmail(studentDto.getEmail());
-    if (studentOptional.isPresent()) {
-      throw new IllegalStateException("email taken");
+    public List<StudentDto> getStudents() {
+        return studentRepository.findAllByOrderByIdAsc().stream()
+                .map(studentMapper::toStudentDto)
+                .collect(Collectors.toList());
     }
-    studentRepository.save(mapper.toStudent(studentDto));
-  }
 
-  public void deleteStudent(Long studentId) {
-    boolean exists = studentRepository.existsById(studentId);
-    if (!exists) {
-      throw new IllegalStateException("student with id " + studentId + " does not exists");
+    public StudentDto getStudentById(Long studentId) {
+        return studentRepository.findById(studentId)
+                .map(studentMapper::toStudentDto)
+                .orElseThrow(() -> new IllegalStateException("No student with id " + studentId));
     }
-    studentRepository.deleteById(studentId);
-  }
 
-  @Transactional
-  public void updateStudent(Long studentId,StudentDto studentDto) {
-    Student student = studentRepository.findById(studentId).orElseThrow(
-        () -> new IllegalStateException("student with id " + studentId + " does not exists"));
-    student.setName(studentDto.getName());
-    student.setEmail(studentDto.getEmail());
-    student.setDateOfBirth(studentDto.getDateOfBirth());
+    public void addNewStudent(StudentDto studentDto) {
+        Student student = studentMapper.toStudent(studentDto);
+        studentRepository.save(student);
+
+    }
+
+    public void deleteStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(
+                () -> new IllegalStateException("student with id " + studentId + " does not exists"));
+        if (student.getGroup() == null) {
+            studentRepository.deleteById(studentId);
+        } else {
+            throw new IllegalStateException("student " + studentId + " in group with id " + student.getGroup().getId());
+        }
+    }
+
+    @Transactional
+    public void updateStudent(Long studentId, StudentDto studentDto) {
+        Student student = studentRepository.findById(studentId).orElseThrow(
+                () -> new IllegalStateException("student with id " + studentId + " does not exists"));
+        student.setName(studentDto.getName());
+        student.setEmail(studentDto.getEmail());
+        student.setDateOfBirth(studentDto.getDateOfBirth());
     }
 }

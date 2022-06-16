@@ -1,9 +1,8 @@
 package com.example.demo.student;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -11,21 +10,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/students")
+@AllArgsConstructor
 public class StudentController {
 
     private final StudentService studentService;
 
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
-
     @GetMapping
-    private List<StudentDto> getStudents() {
+    public List<StudentDto> getStudents() {
         return studentService.getStudents();
     }
+
     @GetMapping(path = "{studentId}")
-    private StudentDto getStudents(@PathVariable("studentId") Long studentId) {
+    public StudentDto getStudentById(@PathVariable("studentId") Long studentId) {
         return studentService.getStudentById(studentId);
     }
 

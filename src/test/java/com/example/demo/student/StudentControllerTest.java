@@ -34,8 +34,8 @@ class StudentControllerTest {
 
 
     @Test
-    void getStudents() throws Exception {
-        List<StudentDto> result = List.of(new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18)));
+    void getStudents_WhenGot_ThenCheckStatusAndContent() throws Exception {
+        List<StudentDto> result = List.of(StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build());
         when(mockStudentService.getStudents()).thenReturn(result);
         this.mockMvc.perform(get("/students"))
                 .andDo(print())
@@ -44,8 +44,19 @@ class StudentControllerTest {
     }
 
     @Test
-    void registerNewStudent() throws Exception {
-        StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
+    void getStudentById_WhenGot_ThenCheckStatusAndContent() throws Exception {
+        Long studentId = 1L;
+        StudentDto result = StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build();
+        when(mockStudentService.getStudentById(studentId)).thenReturn(result);
+        this.mockMvc.perform(get("/students/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJsonString(result)));
+    }
+
+    @Test
+    void registerNewStudent_WhenDone_ThenCheckIsItCreated() throws Exception {
+        StudentDto studentDto = StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/students")
                         .content(toJsonString(studentDto))
@@ -55,7 +66,7 @@ class StudentControllerTest {
 
     @Test
     void registerNewStudent_WhenValidationFailed_ThenReturnBadStatus() throws Exception {
-        StudentDto studentDto = new StudentDto("", "email1", LocalDate.of(2020, 2, 18));
+        StudentDto studentDto = StudentDto.builder().name("").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/students")
                         .content(toJsonString(studentDto))
@@ -64,7 +75,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void deleteStudent() throws Exception {
+    void deleteStudent_WhenDone_ThenCheckIsItDeleted() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/students/1"))
                 .andExpect(status().isNoContent());
@@ -72,7 +83,7 @@ class StudentControllerTest {
 
     @Test
     void updateStudent_WhenValidationFailed_ThenReturnBadStatus() throws Exception {
-        StudentDto studentDto = new StudentDto("", "email1", LocalDate.of(2020, 2, 18));
+        StudentDto studentDto = StudentDto.builder().name("").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/students/1")
                         .content(toJsonString(studentDto))
@@ -81,8 +92,8 @@ class StudentControllerTest {
     }
 
     @Test
-    void updateStudent() throws Exception {
-        StudentDto studentDto = new StudentDto("name1", "email1", LocalDate.of(2020, 2, 18));
+    void updateStudent_WhenValidationOk_ThenCheckIsItCreated() throws Exception {
+        StudentDto studentDto = StudentDto.builder().name("name1").email("email1").dateOfBirth(LocalDate.of(2020, 2, 18)).build();
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/students/1")
                         .content(toJsonString(studentDto))

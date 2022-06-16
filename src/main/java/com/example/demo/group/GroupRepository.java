@@ -1,4 +1,4 @@
-package com.example.demo.student;
+package com.example.demo.group;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    List<Student> findAllByOrderByIdAsc();
+    List<Group> findAllByOrderByIdAsc();
+
 }

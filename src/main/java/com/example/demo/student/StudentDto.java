@@ -1,44 +1,24 @@
 package com.example.demo.student;
 
-import org.hibernate.annotations.NaturalId;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudentDto {
+    private Long id;
     @NotEmpty(message = "Name may not be empty")
     private String name;
     @NotEmpty(message = "Email may not be empty")
     private String email;
     private LocalDate dateOfBirth;
-
-    public StudentDto(String name, String email, LocalDate dateOfBirth) {
-        this.name = name;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+    private Long groupId;
 }
